@@ -17,18 +17,15 @@
  * @return {ListNode}
  */
 var reverseList = function(head) {
-    // a a.next a.next.next b
-    // last now next
-
-    let first = head;
-    let now = null;
-    while(first) {
-        const next = first.next;
-        first.next = now;
-        now = first;
-        first = next;
+    let now = head;
+    let last = null;
+    while(now) {
+        const nextNode = now.next;
+        now.next = last;
+        last = now;
+        now = nextNode;
     }
-    return now;
+    return last;
 };
 // @lc code=end
 
