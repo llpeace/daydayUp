@@ -11,14 +11,24 @@
  */
 var mySqrt = function(x) {
     let res = 1;
-    for (let i = 1; i <= Math.floor(x / 2); i++) {
-        if (i * i <= x) {
-            res = i;
+    // for (let i = 1; i <= Math.floor(x / 2); i++) {
+    //     if (i * i <= x) {
+    //         res = i;
+    //     } else {
+    //         break;
+    //     }
+    // }
+    if (x === 0) return 0;
+    let l = 1, r = Math.floor(x / 2);
+    while (l <= r) {
+        let mid = Math.floor((l + r) / 2);
+        if (mid * mid <= x) {
+            l = mid + 1;
+            res = mid;
         } else {
-            break;
+            r = mid - 1;
         }
     }
-    if (x === 0) return 0;
     return res;
 };
 // @lc code=end
