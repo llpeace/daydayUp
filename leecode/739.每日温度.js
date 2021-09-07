@@ -10,36 +10,21 @@
  * @return {number[]}
  */
 var dailyTemperatures = function(temperatures) {
-    let map = [];
-    let res = [];
-    let ma = 0, mi = Number.MAX_SAFE_INTEGER;
-    let upperArr = [];
-    const add = (num) => {
-        const index = upperArr.findIndex(item  => item >= num);
-        if (index < 0) upperArr.push(num);
-        else {
-            upperArr.splice(index, 0, num);
+    let stack = [], res = [];
+    let len = stack.length - 1;
+    for(let i = 0; i < temperatures.length; i++) {
+        while(len >= 0 && temperatures[i] > temperatures[stack[len]]) {
+            const x = stack.pop();
+            res[x] = i - x;
+            len = stack.length - 1;
         }
+        stack.push(i);
+        len = stack.length - 1;
     }
-    temperatures.forEach((item, index) => {
-        map[item] = map[item] ? [...map[item], index] : [index];
-        ma = Math.max(item, ma);
-        mi = Math.min(item, mi);
-    });
-    const findAns = (index) => {
-        let ans = upperArr.find(item => item > index);
-        if (ans) return ans - index;
-        return 0;
-    }
-    for(let i = ma; i >= mi; i --) {
-        if (map[i]) {
-            for(let j = 0; j < map[i].length; j++) {
-                res[map[i][j]] = findAns(map[i][j]);
-            }
-            for(let j = 0; j < map[i].length; j++) {
-                add(map[i][j]);
-            }
-        }
+    while(len >= 0) {
+        const x = stack.pop();
+        res[x] = 0;
+        len = stack.length - 1;
     }
     return res;
 };
