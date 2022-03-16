@@ -1,3 +1,3 @@
 # daydayUp
-leecode
+leetcode
 javascript
