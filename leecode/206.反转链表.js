@@ -17,15 +17,15 @@
  * @return {ListNode}
  */
 var reverseList = function(head) {
-    let prev = head;
-    let now = null;
-    while(prev) {
-        let m = prev.next;
-        prev.next = now;
-        now = prev;
-        prev = m;
+    const find = (last, node) => {
+        if (!node) {
+            return last;
+        }
+        const y = node.next;
+        node.next = last;
+        return find(node, y);
     }
-    return now;
+    return find(null, head);
 };
 // @lc code=end
 
