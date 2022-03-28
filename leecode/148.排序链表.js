@@ -17,34 +17,43 @@
  * @return {ListNode}
  */
 var sortList = function(head) {
-    let res = [];
-    let x = new ListNode();
-    const node = x;
-    while(head) {
-        res.push(head.val);
-        head = head.next;
+    const merge = (left, right) => {
+        let l = left, r = right;
+        let res = new ListNode();
+        let head = res;
+        while (l || r) {
+            if ((r && l && l.val < r.val) || (!r && l)) {
+                res.next = l;
+                l = l.next;
+            } else if ((l && r && l.val >= r.val) || (!l && r)) {
+                res.next = r;
+                r = r.next;
+            }
+            res = res.next;
+        }
+        return head.next;
     }
-    // function sort(arr) {
-    //     if (!arr.length) return [];
-    //     const x = arr[0];
-    //     const left = [], right = [];
-    //     for(let i = 1; i < arr.length; i++) {
-    //         if (arr[i] < x) {
-    //             left.push(arr[i]);
-    //         } else {
-    //             right.push(arr[i])
-    //         }
-    //     }
-    //     return [...sort(left), x, ...sort(right)];
-    // }
-    res = res.sort((a, b) => (a - b));
-    // console.log(res);
-    for (let i = 0; i < res.length; i++) {
-        const n = new ListNode(res[i]);
-        x.next = n;
-        x = n;
+
+    const sort = (list, tail) => {
+        let fast = list, slow = list;
+        if (list === null) {
+            return list;
+        }
+        if (list.next === tail) {
+            list.next = null;
+            return list;
+        }
+        while (fast !== tail) {
+            slow = slow.next;
+            fast = fast.next;
+            if (fast !== tail) {
+                fast = fast.next;
+            }
+        }
+        const mid = slow;
+        return merge(sort(list, mid), sort(mid, tail));
     }
-    return node.next;
+    return sort(head, null);
 };
 // @lc code=end
 
